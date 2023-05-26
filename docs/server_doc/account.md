@@ -1,21 +1,20 @@
-## 注册新用户
+## Register a new user
 
-### **简要描述**
+### **A brief description**
 
- - 用户注册新账号时，AppServer 调用此在OpenIM系统中创建新用户。
+ -Apserver calls this new user in the Openim system when the user registers a new account.
 
-### **请求URL**
+### ** Request URL **
 
 
  - `http://x.x.x.x:10002/auth/user_register`
 
-
-### **请求方式**
+### ** Request **
 
 
  - `POST`
 
-### **请求示例**
+### ** Request example **
 
   ```json
  {
@@ -32,24 +31,22 @@
     "operationID": "123111111"
 }
   ```
+### ** Request parameter **
 
-### **请求参数**
-
-|   参数名    |  类型  | 必选 | 说明               |
+| Parameter name | Type | Must -choose | Description     |
 | :---------: | :----: | ---- | :----------------- |
-|   secret    | string | 是   | OpenIM秘钥         |
-|  platform   |  int   | 是   | 用户注册的平台类型 |
-|   userID    | string | 是   | 用户 ID            |
-|  nickname   | string | 是   | 用户昵称           |
-|   faceURL   | string | 否   | 用户头像URL        |
-|   gender    |  int   | 否   | 用户性别           |
-| phoneNumber | string | 否   | 用户手机号码       |
-|    birth    |  int   | 否   | 用户生日           |
-|    email    | string | 否   | 邮箱地址           |
-|     ex      | string | 否   | 扩展字段           |
-| operationID | string | 是   | 操作ID             |
-
-### **返回示例**
+|   secret    | string |Yes | Openim secrets |
+|  platform   |  int   | Yes | Platform type of user registration |
+|   userID    | string | Yes | User ID |
+|  nickname   | string | Yes | User Nickname |
+|   faceURL   | string | No | User avatar URL |
+|   gender    |  int   | No | User Gender |
+| phoneNumber | string | No | User mobile phone number |
+|    birth    |  int   | No | User Birthday |
+|    email    | string | No | Email address |
+|     ex      | string | No | Extension field |
+| operationID | string |Yes | Operation ID |
+### ** Return to Example **
 
   ```json
 {
@@ -62,33 +59,32 @@
     }
 }
   ```
+### ** Return to parameters **
 
-### **返回参数**
+| Parameter name | Type | Description |
+|: ----------- |: ---------------------------------------------------------------------------------
+| Errcode | int | 0 Success, non -0 failure |
+| Errmsg | String | Error Information |
+| USERID | String | User ID |
+| Token | String | User Token |
+| Expiredtime | int | Token Expired Time Stamp (second) |
 
-| 参数名      | 类型   | 说明                  |
-| :---------- | :----- | --------------------- |
-| errCode     | int    | 0成功，非0失败        |
-| errMsg      | string | 错误信息              |
-| userID      | string | 用户ID                |
-| token       | string | 用户token             |
-| expiredTime | int    | token过期时间戳（秒） |
+## Get user token
 
-## 获取用户token
+### **A brief description**
 
-### **简要描述**
+AppServer calls this interface to get token. IMSDK needs to be introduced to the token when login
 
-AppServer调用此接口获取token，IMSDK在login时需传入token
-
-### **请求URL**
+### ** Request URL **
 
 -  ` http://x.x.x.x:10002/auth/user_token`
 
 
-### **请求方式**
+### ** Request **
 
  -  `POST`
 
-### **请求示例**
+### ** Request example **
 
   ```json
  {
@@ -99,16 +95,16 @@ AppServer调用此接口获取token，IMSDK在login时需传入token
 }
   ```
 
-### **请求参数**
+### ** Request parameter **
 
-|   参数名    | 类型   | 必选 | 说明               |
+| Parameter name | Type | Must -choose | Description |
 | :---------: | ------ | :--: | :----------------- |
-|   secret    | string |  是  | OpenIM秘钥         |
-|  platform   | int    |  是  | 用户登录的平台类型 |
-|   userID    | string |  是  | 用户ID             |
-| operationID | string |  是  | 操作ID             |
+|   secret    | string | Yes | Openim secrets |
+|  platform   | int    | Yes | Platform type of user login |
+|   userID    | string |  Yes | User ID |
+| operationID | string | Yes | Operation ID |
 
-### **返回示例**
+### ** Return to Example **
 
    ```json
 {
@@ -122,13 +118,13 @@ AppServer调用此接口获取token，IMSDK在login时需传入token
 }
    ```
 
-### **返回参数**
+### ** Return to parameters **
 
-| 参数名      | 类型   | 说明                  |
+| Parameter name | Type | Description |
 | :---------- | :----- | --------------------- |
-| errCode     | int    | 0成功，非0失败        |
-| errMsg      | string | 错误信息              |
-| userID      | string | 用户ID                |
-| token       | string | 用户token             |
-| expiredTime | int    | token过期时间戳（秒） |
+| errCode     | int    | 0Success, non -0 failure |
+| errMsg      | string | Error message              |
+| userID      | string | User ID                |
+| token       | string | User token             |
+| expiredTime | int    | Token Expired Time Stamp (second) |
 

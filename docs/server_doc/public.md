@@ -1,33 +1,26 @@
-# OpenIM字段说明
+# Openim field description
 
-|    参数名    |   类型   | 最大字符串长度限制 | 说明                                                         | 取值范围                                                     |
-| :----------: | :------: | ------------------ | :----------------------------------------------------------- | ------------------------------------------------------------ |
-|    secret    |  string  | 32                 | OpenIM秘钥，服务端配置文件config.yaml的secret字段，注意安全保存 | 字符串即可                                                   |
-|   platform   |   int    |                    | 用户登录或注册的平台类型                                     | iOS 1, Android 2, Windows 3, OSX 4, WEB 5, 小程序 6，linux 7 |
-|    userID    |  string  | 64                 | 用户 ID，必须保证IM内唯一                                    | 字符串即可                                                   |
-|   nickname   |  string  | 255                | 用户昵称或者群昵称                                           | 字符串即可                                                   |
-|   faceURL    |  string  | 255                | 用户头像或者群头像url，根据上下文理解                        |                                                              |
-|    gender    |   int    |                    | 用户性别                                                     | 1 表示男，2 表示女                                           |
-| phoneNumber  |  string  | 32                 | 用户手机号码，包括地区，(如香港：+852-xxxxxxxx)，            |                                                              |
-|    birth     |  uint32  |                    | 用户生日，Unix时间戳（秒）                                   |                                                              |
-|    email     |  string  | 64                 | 邮箱地址                                                     |                                                              |
-|      ex      |  string  | 1024               | 扩展字段，用户可自行扩展，建议封装成 JSON 字符串             |                                                              |
-| operationID  |  string  |                    | 操作ID，保持唯一，建议用当前时间微秒+随机数                  |                                                              |
-| expiredTime  |   int    |                    | 过期时间，单位（秒）                                         |                                                              |
-|  roleLevel   |   int    |                    | 群内成员类型                                                 | 1普通成员，2群主，3管理员                                    |
-|  groupType   |   int    |                    | 群类型                                                       | 目前统一填0                                                  |
-| ownerUserID  |  string  | 64                 | 群主UserID                                                   |                                                              |
-|  groupName   |  string  | 255                | 群名称                                                       |                                                              |
-| notification |  string  | 255                | 群公告                                                       |                                                              |
-| introduction |  string  | 255                | 群介绍                                                       |                                                              |
-|  memberList  | json数组 |                    | 成员列表                                                     |                                                              |
-|    reason    |  string  | 64                 | 原因，比如踢人等原因                                         |                                                              |
-|    token     |  string  |                    | 调用api时设置到请求header中                                  |                                                              |
-|  userIDList  | json数组 |                    | 用户的userID列表                                             |                                                              |
-
-
-
-
-
-
-
+| Parameter Title | Type | Maximum String length limit | Description | Value range |
+|: -----------: |: --------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | |
+| Secret | String | 32 | Openim secrets, the secret field of config.yaml configuration file config.yaml, pay attention to safe saving | string
+| Platform | int | | User login or registered platform type | iOS 1, Android 2, Windows 3, OSX 4, Web 5, Small Program 6, Linux 7 |
+| USERID | String | 64 | User ID, you must ensure the unique | string in the IM |
+| nickName | String | 255 | User nickname or group nickname | string
+| FACEURL | String | 255 | User avatar or group avatar URL, understand according to the context | |
+| Gender | int
+| PHONENUMBER | String | 32 | User's mobile phone number, including region, (such as Hong Kong:+852-xxxxxxxx), | | | |
+| BIRTH | UINT32 | | User Birthday, UNIX Timeline (second) | |
+| Email | String | 64 | Email address | | | |
+| EX | String | 1024 | Extended fields, users can expand themselves, it is recommended to be encapsulated into JSON string | |
+| Operationid | String | | Operation ID, keep the unique, it is recommended to use the current time microsecond+random number | |
+| Expiredtime | int | | Expired time, unit (second) | |
+| ROLELEVEL | int | | Member types in the group | 1 Ordinary member, 2 group owners, 3 administrators |
+| groupype | int | | group type | Uniform filling 0 |
+| OwnerUserid | String | 64 | Group owner userid | |
+| GroupName | String | 255 | Group name | | |
+| Notification | String | 255 | Group Announcement | |
+| INTRODUCTION | String | 255 | Group Introduction | |
+| Memberlist | JSON array | | Member list | |
+| Reason | String | 64 | Cause, such as kicking people and other reasons | |
+| Token | String | | When calling the API, set it to the request header | |
+| Useridlist | JSON array | | Userid list of users | |

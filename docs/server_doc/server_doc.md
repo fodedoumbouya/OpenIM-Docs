@@ -1,32 +1,32 @@
-# **服务器API**
+# **Server API**
 
-服务器端API是由OpenIM后端提供的一系列HTTP(s)接口，用于业务系统和IM对接。比如以APP管理员的身份导入好友、创建群组、发送消息等。
+The server-side API is a series of HTTP(s) interfaces provided by the OpenIM backend, which are used for connecting business systems and IM. For example, import friends, create groups, send messages, etc. as an APP administrator.
 
-## **注册新用户**
+## **Register New User**
 
-### **简要描述**
+### **A brief description**
 
- - 用户注册调用 AppServer，AppServer 调用 IMServer（auth/user_register）创建新用户。管理员需要调用注册接口获取自己管理员token，然后利用管理员token调用其他的服务器API
+ - User registration calls AppServer, and AppServer calls IMServer (auth/user_register) to create a new user. Administrators need to call the registration interface to obtain their own administrator token, and then use the administrator token to call other server APIs
 
-### **请求URL**
+### **Request URL**
 
 
  - `http://x.x.x.x:10002/auth/user_register`
 
 
-### **请求方式**
+### **Request method**
 
 
  - `POST`
 
-### **请求示例**
+### **Request Example**
 
   ```json
  {
   "secret": "tuoyun", 
   "platform": 1, 
   "uid": "d5645454517", 
-  "name": "张三", 
+  "name": "Zhang San",
   "icon": "https:oss.com.cn/head", 
   "gender": 1, 
   "mobile": "17812457845", 
@@ -36,22 +36,22 @@
  }
   ```
 
-### **请求参数**
+### **Request parameters**
 
-|  参数名  | 必选 |  类型  | 说明                                                         |
+| parameter name | required | type | description |
 | :------: | :--: | :----: | :----------------------------------------------------------- |
-|  secret  |  是  | string | AppServer 请求 IMToken 用到的秘钥，最大长度 32 字符，必须保证 AppServer 和 IMServer 秘钥一致， secret 泄露有风险，最好保存在用户服务器端 |
-| platform |  是  |  int   | 平台类型 iOS 1, Android 2, Windows 3, OSX 4, WEB 5, 小程序 6，linux 7 |
-|   uid    |  是  | string | 用户 ID，最大长度 64 字符，必须保证一个 APP 内唯一,如果是管理员注册则需要填写和IM服务器配置config.yaml的appmanageruid保持一致，可以自行修改配置文件中的appmanageruid |
-|   name   |  是  | string | 用户昵称，最大长度 64 字符，可设置为空字符串                 |
-|   icon   |  否  | string | 用户头像，最大长度 1024 字节，可设置为空字符串               |
-|  gender  |  否  |  int   | 用户性别，0 表示未知，1 表示男，2 女表示女，其它会报参数错误 |
-|  mobile  |  否  | string | 用户 mobile，最大长度 32 字符，非中国大陆手机号码需要填写国家代码(如美国：+1-xxxxxxxxxx)或地区代码(如香港：+852-xxxxxxxx)，可设置为空字符串 |
-|  birth   |  否  | string | 用户生日，最大长度 16 字符，可设置为空字符串                 |
-|  email   |  否  | string | 用户 email，最大长度 64 字符，可设置为空字符串               |
-|    ex    |  否  | string | 用户名片扩展字段，最大长度 1024 字符，用户可自行扩展，建议封装成 JSON 字符串，也可以设置为空字符串 |
+| secret | is | string | The secret key used by AppServer to request IMToken, the maximum length is 32 characters, the secret key must be consistent between AppServer and IMServer, secret leakage is risky, it is best to save it on the user server side |
+| platform | is | int | platform type iOS 1, Android 2, Windows 3, OSX 4, WEB 5, applet 6, linux 7 |
+| uid | is | string | user ID, the maximum length is 64 characters, and must be unique within an APP. If it is an administrator registration, it needs to be consistent with the appmanageruid in the IM server configuration config.yaml. You can modify the appmanageruid in the configuration file by yourself |
+| name | is | string | user nickname, the maximum length is 64 characters, it can be set as an empty string |
+| icon | No | string | User avatar, the maximum length is 1024 bytes, which can be set as an empty string |
+| gender | No | int | User gender, 0 means unknown, 1 means male, 2 female means female, other parameter errors will be reported |
+| mobile | No | string | user mobile, the maximum length is 32 characters, the country code (such as the United States: +1-xxxxxxxxxx) or area code (such as Hong Kong: +852-xxxxxxxxx) is required for non-Chinese mainland mobile phone numbers, which can be set to empty string |
+| birth | no | string | user's birthday, the maximum length is 16 characters, can be set as an empty string |
+| email | No | string | User email, the maximum length is 64 characters, it can be set as an empty string |
+| ex | No | string | The user card extension field, the maximum length is 1024 characters, the user can expand it by himself, it is recommended to encapsulate it into a JSON string, or it can be set to an empty string |
 
-### **返回示例**
+### **Back Example**
 
   ```json
 {
@@ -65,32 +65,32 @@
 }
   ```
 
-  ### **返回参数**
+  ### **Return parameters**
 
-| 参数名      | 类型   | 说明            |
+| parameter name | type | description |
 | :---------- | :----- | --------------- |
-| errCode     | int    | 0成功，非0失败  |
-| errMsg      | string | 错误信息        |
-| uid         | string | 注册用户的Uid   |
-| token       | string | 生成的用户token |
-| expiredTime | int    | 过期时间戳      |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
+| uid | string | Uid of registered user |
+| token | string | Generated user token |
+| expiredTime | int | expired timestamp |
 
-## **换取 IMToken**
+## **Exchange for IMToken**
 
-### **简要描述**
+### **A brief description**
 
-  AppServer 通过调用 IMServer（auth/user_token）创建或刷新 token，AppClientSDK 在连接 IMServer 时需要填入 token，IMServer 会校验 token 有效性。
+  AppServer creates or refreshes the token by calling IMServer (auth/user_token). AppClientSDK needs to fill in the token when connecting to IMServer, and IMServer will verify the validity of the token.
 
-### **请求URL**
+### **Request URL**
 
 -  ` http://x.x.x.x:10002/auth/user_token`
 
 
-### **请求方式**
+### **Request method**
 
  -  `POST`
 
-  ### **请求示例**
+  ### **Request Example**
 
   ```json
  {
@@ -100,15 +100,15 @@
  }
   ```
 
-### **请求参数**
+### **Request parameters**
 
-|  参数名  | 必选 |  类型  | 说明                                                         |
+| parameter name | required | type | description |
 | :------: | :--: | :----: | :----------------------------------------------------------- |
-|  secret  |  是  | string | AppServer 请求 IMToken 用到的秘钥，最大长度 32 字符，必须保证 AppServer 和 IMServer 秘钥一致， secret 泄露有风险，最好保存在用户服务器端 |
-| platform |  是  |  int   | 平台类型 iOS 1, Android 2, Windows 3, OSX 4, WEB 5, 小程序 6，linux 7 |
-|   uid    |  是  | string | 用户 ID，最大长度 64 字符，必须保证一个 APP 内唯一。 如果是管理员注册则需要填写和IM服务器配置config.yaml的appmanageruid保持一致，可以自行修改配置文件中的appmanageruid |
+| secret | is | string | The secret key used by AppServer to request IMToken, the maximum length is 32 characters, the secret key must be consistent between AppServer and IMServer, secret leakage is risky, it is best to save it on the user server side |
+| platform | is | int | platform type iOS 1, Android 2, Windows 3, OSX 4, WEB 5, applet 6, linux 7 |
+| uid | is | string | user ID, the maximum length is 64 characters, and it must be unique within an APP. If you are an administrator, you need to fill in the same appmanageruid as the IM server configuration config.yaml, and you can modify the appmanageruid in the configuration file by yourself |
 
-### **返回示例**
+### **Back Example**
 
    ```json
  {
@@ -122,56 +122,56 @@
 }
    ```
 
-   ### **返回参数**
+   ### **Return parameters**
 
-| 参数名      | 类型   | 说明            |
+| parameter name | type | description |
 | :---------- | :----- | --------------- |
-| errCode     | int    | 0成功，非0失败  |
-| errMsg      | string | 错误信息        |
-| uid         | string | 注册用户的Uid   |
-| token       | string | 生成的用户token |
-| expiredTime | int    | 过期时间戳      |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
+| uid | string | Uid of registered user |
+| token | string | Generated user token |
+| expiredTime | int | expired timestamp |
 
-## 创建群组
+## create group
 
-### **简要描述**
+### **A brief description**
 
-- APP管理员创建群组，需指定群主
+- The APP administrator creates a group and needs to designate the group owner
 
-### **请求URL**
+### **Request URL**
 
 - `http://x.x.x.x:10002/group/create_group`
 
-### **请求数据方式**
+### **Request data method**
 
 - POST
 
-### **请求示例**
+### **Request Example**
 
 ```
  {
     "memberList":[{"uid":"21979710c3fe454d","setRole":1},{"uid":"89b8924ea455a642","setRole":2}],
     "groupName":"groupName_on10",
-    "introduction":"简介",
+    "introduction": "Introduction",
     "notification":"公告",
     "faceUrl":"url",
     "operationID":"1"
 }
 ```
 
-### **请求参数**
+### **Request parameters**
 
-| 参数名       | 必选 | 类型   | 说明                                                         |
+| parameter name | required | type | description |
 | :----------- | :--- | :----- | ------------------------------------------------------------ |
-| memberList   | 是   | 数组   | 指定初始群成员  setRole 0为普通成员 1为群主 2为管理员        |
-| groupName    | 是   | string | 群聊的名字                                                   |
-| introduction | 否   | string | 群简介                                                       |
-| notification | 否   | string | 群公告                                                       |
-| faceUrl      | 否   | string | 群头像                                                       |
-| token        | 是   | string | 从header中获取，此token必须以APP管理员身份调用auth/user_token生成 |
-| operationID  | 是   | string | 操作id，用随机字符串                                         |
+| memberList | Yes | Array | Specify the initial group member setRole 0 is an ordinary member 1 is a group owner 2 is an administrator |
+| groupName | is | string | the name of the group chat |
+| introduction | no | string | group introduction |
+| notification | No | string | Group announcement |
+| faceUrl | No | string | Group Avatar |
+| token | is | string | obtained from the header, this token must be generated by calling auth/user_token as an APP administrator |
+| operationID | is | string | operation id, use a random string |
 
-### **返回示例**
+### **Back Example**
 
 ```
  {
@@ -183,31 +183,31 @@
 }
 ```
 
-### **返回参数**
+### **Return parameter**
 
-| 参数名  | 类型     | 说明                                   |
+| parameter name | type | description |
 | :------ | :------- | -------------------------------------- |
-| errCode | int      | 0成功，非0失败                         |
-| errMsg  | string   | 错误信息                               |
-| data    | json对象 | 返回创建群结果 groupID为创建成功的群id |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
+| data | json object | return group creation result groupID is the successfully created group id |
 
 
 
-## 邀请进群
+## Invite into the group
 
-### **简要描述**
+### **A brief description**
 
-- APP管理员邀请用户直接进群
+- APP administrators invite users to directly join the group
 
-### **请求URL**
+### **Request URL**
 
 - `http://x.x.x.x:10002/group/invite_user_to_group`
 
-### **请求方式**
+### **Request method**
 
 - POST
 
-### **请求示例**
+### **Request Example**
 
 ```
 {
@@ -220,17 +220,17 @@
 }
 ```
 
-### **请求参数**
+### **Request parameters**
 
-| 参数名      | 必选 | 类型     | 说明                                                         |
+| parameter name | required | type | description |
 | :---------- | :--- | :------- | ------------------------------------------------------------ |
-| groupID     | 是   | string   | 群id                                                         |
-| uidList     | 是   | json数组 | 被邀请进群的用户uid列表                                      |
-| reason      | 是   | string   | 进群理由                                                     |
-| token       | 是   | string   | 从header中获取，此token必须以APP管理员身份调用auth/user_token生成 |
-| operationID | 是   | string   | 操作id，用随机字符串                                         |
+| groupID | is | string | group id |
+| uidList | is | json array | uid list of users invited to the group |
+| reason | is | string | reason for joining the group |
+| token | is | string | obtained from the header, this token must be generated by calling auth/user_token as an APP administrator |
+| operationID | is | string | operation id, use a random string |
 
-### **返回示例**
+### **Back Example**
 
 ```
 {
@@ -245,31 +245,31 @@
 }
 ```
 
-### **返回参数**
+### **Return parameter**
 
-| 参数名  | 类型     | 说明                              |
+| parameter name | type | description |
 | :------ | :------- | --------------------------------- |
-| errCode | int      | 0成功，非0失败                    |
-| errMsg  | string   | 错误信息                          |
-| data    | json对象 | 被邀请用户的uid，result 0表示成功 |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
+| data | json object | uid of the invited user, result 0 means success |
 
 
 
-## 把用户踢出群
+## kick the user out of the group
 
-### **简要描述**
+### **A brief description**
 
-- APP管理员把用户从群里直接踢出
+- The APP administrator directly kicks the user out of the group
 
-### **请求URL**
+### **Request URL**
 
 - `http://x.x.x.x:10002/group/kick_group`
 
-### **请求方式**
+### **Request method**
 
 - POST
 
-### **请求示例 **
+### **Request Example**
 
 ```
 {
@@ -281,16 +281,16 @@
 }
 ```
 
-### **请求参数**
+### **Request parameters**
 
-| 参数名      | 必选 | 类型     | 说明                                                         |
+| parameter name | required | type | description |
 | :---------- | :--- | :------- | ------------------------------------------------------------ |
-| groupID     | 是   | string   | 群id                                                         |
-| uidListInfo | 是   | json数组 | 被踢用户id列表                                               |
-| token       | 是   | string   | 从header中获取，此token必须以APP管理员身份调用auth/user_token生成 |
-| operationID | 是   | string   | 操作id，用随机字符串                                         |
+| groupID | is | string | group id |
+| uidListInfo | is | json array | kicked user id list |
+| token | is | string | obtained from the header, this token must be generated by calling auth/user_token as an APP administrator |
+| operationID | is | string | operation id, use a random string |
 
-### **返回示例**
+### **Back Example**
 
 ```
 {
@@ -305,31 +305,31 @@
 }
 ```
 
-### **返回参数**
+### **Return parameter**
 
-| 参数名  | 类型     | 说明                                 |
+| parameter name | type | description |
 | :------ | :------- | ------------------------------------ |
-| errCode | int      | 0成功，非0失败                       |
-| errMsg  | string   | 错误信息                             |
-| data    | json对象 | uid：被踢用户uid， result：0表示成功 |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
+| data | json object | uid: kicked user uid, result: 0 means success |
 
 
 
-## 导入好友
+## import friends
 
-### **简要描述**
+### **A brief description**
 
-- APP管理员使用户A、B成为好友
+- The APP administrator makes users A and B friends
 
-### **请求URL**
+### **Request URL**
 
 - `http://x.x.x.x:10002/friend/import_friend`
 
-### **请求方式**
+### **Request method**
 
 - POST
 
-### **请求示例 **
+### **Request Example**
 
 ```
 {
@@ -339,16 +339,16 @@
 }
 ```
 
-### **请求参数**
+### **Request parameters**
 
-| 参数名      | 必选 | 类型   | 说明                                                         |
+| parameter name | required | type | description |
 | :---------- | :--- | :----- | ------------------------------------------------------------ |
-| uid         | 是   | string | A用户uid                                                     |
-| operationID | 是   | string | 操作id，用随机字符串                                         |
-| ownerUid    | 是   | string | B用户uid                                                     |
-| token       | 是   | string | 从header中获取，此token必须以APP管理员身份调用auth/user_token生成 |
+| uid | is | string | A user uid |
+| operationID | is | string | operation id, use a random string |
+| ownerUid | is | string | B user uid |
+| token | is | string | obtained from the header, this token must be generated by calling auth/user_token as an APP administrator |
 
-### **返回示例**
+### **Back Example**
 
 ```
 {
@@ -357,45 +357,45 @@
 }
 ```
 
-### **返回参数说明**
+### **Return parameter description**
 
-| 参数名  | 类型   | 说明           |
+| parameter name | type | description |
 | :------ | :----- | -------------- |
-| errCode | int    | 0成功，非0失败 |
-| errMsg  | string | 错误信息       |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
 
 
 
-## 加入黑名单
+## add to blacklist
 
-### **简要描述**
+### **A brief description**
 
-- APP管理员包uid添加到ownerUid的黑名单中
+- APP administrator package uid is added to the blacklist of ownerUid
 
-### **请求URL**
+### **Request URL**
 
 - `http://x.x.x.x:10002/friend/add_blacklist`
 
-### **请求方式**
+### **Request method**
 
 - POST
 
-### 请求示例
+### request example
 
 ```
 {	"uid":"21979710c3fe454d",	"operationID": "1111111222",	"ownerUid" : "f732156059eeb5d0"}
 ```
 
-### **请求参数**
+### **Request parameters**
 
-| 参数名      | 必选 | 类型   | 说明                                                         |
+| parameter name | required | type | description |
 | :---------- | :--- | :----- | ------------------------------------------------------------ |
-| uid         | 是   | string | 被拉黑的用户id                                               |
-| operationID | 是   | string | 操作id，用随机字符串                                         |
-| token       | 是   | string | 从header中获取，此token必须以APP管理员身份调用auth/user_token生成 |
-| ownerUid    |      |        | 用户id                                                       |
+| uid | is | string | blocked user id |
+| operationID | is | string | operation id, use a random string |
+| token | is | string | obtained from the header, this token must be generated by calling auth/user_token as an APP administrator |
+| ownerUid | | | user id |
 
-### **返回示例**
+### **Back Example**
 
 ```
 {
@@ -404,30 +404,30 @@
 }
 ```
 
-### **返回参数**
+### **Return parameter**
 
-| 参数名  | 类型   | 说明           |
+| parameter name | type | description |
 | :------ | :----- | -------------- |
-| errCode | int    | 0成功，非0失败 |
-| errMsg  | string | 错误信息       |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
 
 
 
-## 更新用户信息
+## Update user information
 
-### **简要描述**
+### **A brief description**
 
-APP管理员更新用户信息
+APP administrator updates user information
 
-### **请求URL**
+### **Request URL**
 
 - `http://x.x.x.x:10002/user/update_user_info`
 
-### **请求方式**
+### **Request method**
 
 - POST
 
-### 请求示例
+### request example
 
 ```
 {
@@ -437,22 +437,22 @@ APP管理员更新用户信息
 }
 ```
 
-### **请求参数**
+### **Request parameters**
 
-| 参数名      | 必选 | 类型   | 说明                                                         |
+| parameter name | required | type | description |
 | :---------- | :--- | :----- | ------------------------------------------------------------ |
-| token       | 是   | string | 从header中获取，此token必须以APP管理员身份调用auth/user_token生成 |
-| operationID | 是   | string | 操作id，用随机字符串                                         |
-| name        | 否   | string | 用户昵称                                                     |
-| icon        | 否   | string | 头像URL                                                      |
-| gender      | 否   | int    | 性别，0未知，1男，2女                                        |
-| mobile      | 否   | string | 用户手机号                                                   |
-| birth       | 否   | string | 用户生日                                                     |
-| email       | 否   | string | 用户邮箱                                                     |
-| ex          | 否   | string | 用户扩展信息                                                 |
-| uid         | 是   | string | 被更新的用户id                                               |
+| token | is | string | obtained from the header, this token must be generated by calling auth/user_token as an APP administrator |
+| operationID | is | string | operation id, use a random string |
+| name | No | string | User nickname |
+| icon | No | string | Avatar URL |
+| gender | No | int | Gender, 0 unknown, 1 male, 2 female |
+| mobile | No | string | User mobile number |
+| birth | no | string | user's birthday |
+| email | no | string | user email |
+| ex | No | string | User extension information |
+| uid | is | string | updated user id |
 
-### **返回示例**
+### **Back Example**
 
 ```
 {
@@ -461,31 +461,31 @@ APP管理员更新用户信息
 }
 ```
 
-### **返回参数**
+### **Return parameter**
 
-| 参数名  | 类型   | 说明           |
+| parameter name | type | description |
 | :------ | :----- | -------------- |
-| errCode | int    | 0成功，非0失败 |
-| errCode | string | 错误信息       |
+| errCode | int | 0 for success, non-zero for failure |
+| errCode | string | error message |
 
-## **删除用户**
+## **delete users**
 
-### **简要描述**
+### **A brief description**
 
- - 管理员调用删除IM用户接口。
+ - The administrator invokes the delete IM user interface.
 
-### **请求URL**
+### **Request URL**
 
 
  - `http://x.x.x.x:10002/manager/delete_user`
 
 
-### **请求方式**
+### **Request method**
 
 
  - `POST`
 
-### **请求示例**
+### **Request Example**
 
   ```json
  {
@@ -498,16 +498,16 @@ APP管理员更新用户信息
 }
   ```
 
-### **请求参数**
+### **Request parameters**
 
-|    参数名     | 必选 |   类型   | 说明                                                         |
+| parameter name | required | type | description |
 | :-----------: | :--: | :------: | :----------------------------------------------------------- |
-|  operationID  |  是  |  string  | 操作id，用随机字符串                                         |
-|     token     |  是  |  string  | 注：放置于POST请求Header中，此token必须以APP管理员身份调用auth/user_token生成 |
-| deleteUidList |  是  | json数组 | 需要删除的uid数组列表                                        |
+| operationID | is | string | operation id, use a random string |
+| token | is | string | Note: placed in the header of the POST request, this token must be generated by calling auth/user_token as an APP administrator |
+| deleteUidList | is | json array | uid array list that needs to be deleted |
 
 
-### **返回示例**
+### **Back Example**
 
   ```json
 {
@@ -520,32 +520,32 @@ APP管理员更新用户信息
 }
   ```
 
-###  **返回参数**
+### **Return parameter**
 
-| 参数名        | 类型     | 说明              |
+| parameter name | type | description |
 | :------------ | :------- | ----------------- |
-| errCode       | int      | 0成功，非0失败    |
-| errMsg        | string   | 错误信息          |
-| failedUidList | json数组 | 删除失败的用户Uid |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
+| failedUidList | json array | delete failed user Uid |
 
-## **获取用户详细信息**
+## **Get user details**
 
-### **简要描述**
+### **A brief description**
 
- - 管理员调用获取用户详细信息接口可以获取多个用户注册的详细信息。
+ - The administrator calls the Get User Details interface to get the details of multiple user registrations.
 
-### **请求URL**
+### **Request URL**
 
 
  - `http://x.x.x.x:10002/user/get_user_info`
 
 
-### **请求方式**
+### **Request method**
 
 
  - `POST`
 
-### **请求示例**
+### **Request Example**
 
   ```json
  {
@@ -554,16 +554,16 @@ APP管理员更新用户信息
 }
   ```
 
-### **请求参数**
+### **Request parameters**
 
-|   参数名    | 必选 |   类型   | 说明                                                         |
+| parameter name | required | type | description |
 | :---------: | :--: | :------: | :----------------------------------------------------------- |
-| operationID |  是  |  string  | 操作id，用随机字符串                                         |
-|    token    |  是  |  string  | 注：放置于POST请求Header中，此token必须以APP管理员身份调用auth/user_token生成 |
-|   uidList   |  是  | json数组 | 需要获取详细信息的用户Uid数组                                |
+| operationID | is | string | operation id, use a random string |
+| token | is | string | Note: placed in the header of the POST request, this token must be generated by calling auth/user_token as an APP administrator |
+| uidList | is | json array | user Uid array that needs to get detailed information |
 
 
-### **返回示例**
+### **Back Example**
 
   ```json
 {
@@ -604,34 +604,34 @@ APP管理员更新用户信息
 }
   ```
 
-### **返回参数**
+### **Return parameter**
 
-| 参数名  | 类型         | 说明                   |
+| parameter name | type | description |
 | :------ | :----------- | ---------------------- |
-| errCode | int          | 0成功，非0失败         |
-| errMsg  | string       | 错误信息               |
-| data    | json对象数组 | 获取的用户详细信息列表 |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
+| data | array of json objects | list of obtained user details |
 
 
 
-## **获取IM注册的所有用户(Uid)**
+## **Get all users (Uid) registered by IM**
 
-### **简要描述**
+### **A brief description**
 
- - 管理员调用获取IM已经注册的所有用户的UID接口。
+ - The administrator calls the interface to obtain the UIDs of all users registered in the IM.
 
-### **请求URL**
+### **Request URL**
 
 
  - `http://x.x.x.x:10002/manager/get_all_users_uid`
 
 
-### **请求方式**
+### **Request method**
 
 
  - `POST`
 
-### **请求示例**
+### **Request Example**
 
   ```json
  {
@@ -639,15 +639,15 @@ APP管理员更新用户信息
 }
   ```
 
-### **请求参数**
+### **Request parameters**
 
-|   参数名    | 必选 |  类型  | 说明                                                         |
+| parameter name | required | type | description |
 | :---------: | :--: | :----: | :----------------------------------------------------------- |
-| operationID |  是  | string | 操作id，用随机字符串                                         |
-|    token    |  是  | string | 注：放置于POST请求Header中，此token必须以APP管理员身份调用auth/user_token生成 |
+| operationID | is | string | operation id, use a random string |
+| token | is | string | Note: placed in the header of the POST request, this token must be generated by calling auth/user_token as an APP administrator |
 
 
-### **返回示例**
+### **Back Example**
 
   ```json
 {
@@ -660,39 +660,39 @@ APP管理员更新用户信息
 }
   ```
 
-###  **返回参数**
+### **Return parameter**
 
-| 参数名  | 类型     | 说明                      |
+| parameter name | type | description |
 | :------ | :------- | ------------------------- |
-| errCode | int      | 0成功，非0失败            |
-| errMsg  | string   | 错误信息                  |
-| uidList | json数组 | 已经注册的所有用户Uid数组 |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
+| uidList | json array | Uid array of all registered users |
 
-## **发送单聊群聊消息**
+## **Send a single chat group chat message**
 
-### **简要描述**
+### **A brief description**
 
- - 管理员通过后台接口发送单聊群聊消息。
+ - The administrator sends a single chat group chat message through the background interface.
 
-### **请求URL**
+### **Request URL**
 
 
  - `http://x.x.x.x:10002/manager/send_msg`
 
 
-### **请求方式**
+### **Request method**
 
 
  - `POST`
 
-### **请求示例**
+### **Request Example**
 
   ```json
 {
     "operationID": "1111111222", 
     "sendID": "1111111222", 
     "recvID": "1111111222", 
-    "senderNickName": "张三", 
+    "senderNickName": "Zhang San",
     "senderFaceURL": "http://www.head.com", 
     "forceList": [
         "122", 
@@ -706,23 +706,23 @@ APP管理员更新用户信息
 }
   ```
 
-### **请求参数**
+### **Request parameters**
 
-|     参数名     | 必选 |   类型   | 说明                                                         |
+| parameter name | required | type | description |
 | :------------: | :--: | :------: | :----------------------------------------------------------- |
-|  operationID   |  是  |  string  | 操作id，用随机字符串                                         |
-|     token      |  是  |  string  | 注：放置于POST请求Header中，此token必须以APP管理员身份调用auth/user_token生成 |
-|     sendID     |  是  |  string  | 发送者ID                                                     |
-|     recvID     |  是  |  string  | 接收者ID，单聊为用户ID，如果是群聊，则为群ID                 |
-| senderNickName |  否  |  string  | 发送者昵称                                                   |
-| senderFaceURL  |  否  |  string  | 发送者头像                                                   |
-|   forceList    |  否  | string[] | 当聊天类型为群聊时，使用@指定强推用户列表                    |
-|    content     |  是  |  string  | 消息的具体内容，内部是json 对象，其他消息的详细字段请参考[消息类型](https://doc.rentsoft.cn/server_doc/server_doc.html#%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B%E6%A0%BC%E5%BC%8F%E6%8F%8F%E8%BF%B0)格式描述文档 |
-|  contentType   |  是  |   int    | 消息类型，101表示文本，102表示图片..详细参考[消息类型](https://doc.rentsoft.cn/server_doc/server_doc.html#%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B%E6%A0%BC%E5%BC%8F%E6%8F%8F%E8%BF%B0)格式描述文档 |
-|  sessionType   |  是  |   int    | 发送的消息是单聊还是群聊,单聊为1，群聊为2                    |
+| operationID | is | string | operation id, use a random string |
+| token | is | string | Note: placed in the header of the POST request, this token must be generated by calling auth/user_token as an APP administrator |
+| sendID | is | string | sender ID |
+| recvID | yes | string | receiver ID, user ID for single chat, group ID for group chat |
+| senderNickName | no | string | sender nickname |
+| senderFaceURL | no | string | sender avatar |
+| forceList | No | string[] | When the chat type is group chat, use @ to specify the list of forced users |
+| content | is | string | the specific content of the message, the internal is a json object, and the detailed fields of other messages, please refer to [message type](https://doc.rentsoft.cn/server_doc/server_doc.html#%E6%B6% 88%E6%81%AF%E7%B1%BB%E5%9E%8B%E6%A0%BC%E5%BC%8F%E6%8F%8F%E8%BF%B0) format description document |
+| contentType | is | int | message type, 101 means text, 102 means picture.. For details, refer to [Message Type](https://doc.rentsoft.cn/server_doc/server_doc.html#%E6%B6%88%E6 %81%AF%E7%B1%BB%E5%9E%8B%E6%A0%BC%E5%BC%8F%E6%8F%8F%E8%BF%B0) format description document |
+| sessionType | Yes | int | Whether the message sent is a single chat or a group chat, 1 for a single chat, 2 for a group chat |
 
 
-### **返回示例**
+### **Back Example**
 
   ```json
 {
@@ -733,46 +733,46 @@ APP管理员更新用户信息
 }
   ```
 
-###  **返回参数**
+### **Return parameter**
 
-| 参数名   |  类型  | 说明                                   |
+| parameter name | type | description |
 | :------- | :----: | -------------------------------------- |
-| errCode  |  int   | 0成功，非0失败                         |
-| errMsg   | string | 错误信息                               |
-| sendTime |  int   | 消息发送的具体时间，具体为纳秒的时间戳 |
-| msgID    | string | 消息的唯一ID                           |
+| errCode | int | 0 for success, non-zero for failure |
+| errMsg | string | error message |
+| sendTime | int | The specific time when the message is sent, specifically the timestamp in nanoseconds |
+| msgID | string | Unique ID of the message |
 
-## 消息类型格式描述
+## Message type format description
 
-### **简要描述**
+### **A brief description**
 
- - 管理员消息发送字段中contentType支持的消息类型说明以及消息content的具体字段说明。
+ - Description of the message types supported by the contentType in the administrator message sending field and the specific field description of the message content.
 
-### **ContentType消息类型说明**
+### **ContentType Message Type Description**
 
-| ContentType值 | 类型说明          |
+| ContentType value | type description |
 | :-----------: | :---------------- |
-|      101      | 文本消息          |
-|      102      | 图片消息          |
-|      103      | 音频消息          |
-|      104      | 视频消息          |
-|      105      | 文件消息          |
-|      106      | 群聊中的@类型消息 |
-|      107      | 合并转发类型消息  |
-|      108      | 名片消息          |
-|      109      | 地理位置类型消息  |
-|      110      | 自定义消息        |
-|      111      | 撤回类型消息      |
-|      112      | 已读回执类型消息  |
-|      114      | 引用类型消息      |
+| 101 | Text Messages |
+| 102 | Picture message |
+| 103 | Audio Messages |
+| 104 | Video Message |
+| 105 | File Messages |
+| 106 | @type messages in group chats |
+| 107 | Merge and Forward Type Messages |
+| 108 | Business card message |
+| 109 | Geolocation Type Messages |
+| 110 | Custom message |
+| 111 | Withdrawal type message |
+| 112 | Read receipt type message |
+| 114 | Reference Type Messages |
 
 
 
-### **Content具体内容**
+### **Content specific content**
 
-- content内部为具体的json对象，不同的消息类型是不同的json对象
+- The content inside is a specific json object, and different message types are different json objects
 
-#### **文本消息**
+#### **Text Message**
 
   ```json
 {
@@ -784,11 +784,11 @@ APP管理员更新用户信息
 }
   ```
 
-| 参数名 | 必选 |  类型  | 说明               |
+| parameter name | required | type | description |
 | :----: | :--: | :----: | :----------------- |
-|  text  |  是  | string | 文本消息的具体内容 |
+| text | is | string | the specific content of the text message |
 
-  #### **自定义消息**
+  #### **Custom Message**
 
   ```json
 {
@@ -802,11 +802,10 @@ APP管理员更新用户信息
 }
   ```
 
-|   参数名    | 必选 |    类型     | 说明                                               |
+| parameter name | required | type | description |
 | :---------: | :--: | :---------: | :------------------------------------------------- |
-|    data     |  是  | json string | 用户自定义的消息为json对象转换后的string           |
-| description |  否  | json string | 扩展的描述信息为json对象转换后的string，可以不使用 |
-|  extension  |  否  | json string | 扩展字段，暂时不使用                               |
-
+| data | is | json string | the user-defined message is the converted string of the json object |
+| description | No | json string | The extended description information is the converted string of the json object, which can not be used |
+| extension | No | json string | Extension field, temporarily unused |
 
 

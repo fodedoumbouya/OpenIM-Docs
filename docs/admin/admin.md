@@ -1,9 +1,5 @@
-# 管理后台预览
-
-> 测试账号：admin1
->
-> 密码：OpenIM888
->
-> **注意：**防止部分人员进行恶意操作，当前预览版本限制了部分功能。如需体验完整版本，请联系OpenIM官方。
-
-[点击这里前往](https://admin.rentsoft.cn)
+#ManagementBackgroundPreview >TestAccount:Admin1
+"
+>password:Openim888
+"
+> **Note: **PreventMaliciousOperationsFromSomePersonnel,AndTheCurrentPreviewVersionLimitsSomeFunctionsIfYouNeedToExperienceTheFullVersion,PleaseContactTheOpenimOfficial. [clickHereToGo] (https://adminRentsoftCn)
